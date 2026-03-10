@@ -1,0 +1,22 @@
+import type { JSX } from "react";
+import Login from "./pages/login/Login";
+import Home from "./pages/home/Home";
+
+type IRoutes = {
+  path: string;
+  element: JSX.Element;
+  requireAuth: boolean;
+};
+
+export const routes: IRoutes[] = [
+  {
+    path: "/auth/login",
+    element: <Login />,
+    requireAuth: true,
+  },
+  {
+    path: "/",
+    element: <Home />,
+    requireAuth: true,
+  },
+];
