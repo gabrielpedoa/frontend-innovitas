@@ -7,9 +7,7 @@ import GlobalStyle, { THEME } from "./styles/global";
 import { ThemeProvider } from "@mui/material";
 
 function App() {
-  const { authenticated, loading } = useVerifyAuth();
-
-  if (loading) return <div>Loading...</div>;
+  const { authenticated } = useVerifyAuth();
 
   return (
     <>

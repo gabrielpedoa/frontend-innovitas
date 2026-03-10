@@ -1,32 +1,28 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { IAuthProvider } from "../@types/auth";
 import type { IUser } from "../@types/user";
-import { loginService, logoutService, meService } from "../services/auth";
+import {
+  createUserService,
+  loginService,
+  logoutService,
+} from "../services/auth";
+import { handleApiError } from "../utils/handleApiError";
 import { AuthContext } from "./AuthContext";
 
 export function AuthProvider({ children }: IAuthProvider) {
   const [user, setUser] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  async function loadUser() {
-    setLoading(true);
-    try {
-      const user = await meService();
-      setUser(user);
-    } catch {
-      setUser(null);
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadUser();
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   async function login(email: string, password: string) {
-    console.log(email, password);
-    const response = await loginService(email, password);
-    setUser(response.user);
+    setLoading(() => true);
+    try {
+      const response = await loginService(email, password);
+      setUser(response.user);
+    } catch (error) {
+      handleApiError(error);
+    } finally {
+      setLoading(() => false);
+    }
   }
 
   async function logout() {
@@ -35,7 +31,15 @@ export function AuthProvider({ children }: IAuthProvider) {
   }
 
   async function createUser(data: IUser) {
-    return data as any;
+    setLoading(() => true);
+    try {
+      const response = await createUserService(data);
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    } finally {
+      setLoading(() => false);
+    }
   }
 
   return (

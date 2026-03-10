@@ -8,6 +8,7 @@ import {
   SubmitButtonStyles,
   VerifyUserHasAccountStyle,
 } from "./styles";
+import Loading from "../../components/Loading";
 
 export default function Login() {
   const { states, handlers } = useAuthFormHook();
@@ -68,20 +69,25 @@ export default function Login() {
               {states.error}
             </Typography>
           )}
-          <Button
-            sx={SubmitButtonStyles}
-            variant="contained"
-            onClick={handlers.handleSubmit}
-          >
-            {toggleTextButton}
-          </Button>
-
-          <Typography
-            sx={VerifyUserHasAccountStyle}
-            onClick={() => handlers.handleModeChange(modeParam)}
-          >
-            {toggleUserHasAccountText}
-          </Typography>
+          {states.loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Button
+                sx={SubmitButtonStyles}
+                variant="contained"
+                onClick={handlers.handleSubmit}
+              >
+                {toggleTextButton}
+              </Button>
+              <Typography
+                sx={VerifyUserHasAccountStyle}
+                onClick={() => handlers.handleModeChange(modeParam)}
+              >
+                {toggleUserHasAccountText}
+              </Typography>
+            </>
+          )}
         </AuthForm>
       </AuthContent>
     </Container>

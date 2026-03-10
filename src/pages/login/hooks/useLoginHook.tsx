@@ -11,7 +11,7 @@ type IForm = {
 type IFormMode = "login" | "register";
 
 export function useAuthFormHook() {
-  const { login, createUser } = useAuthContext();
+  const { login, createUser, loading } = useAuthContext();
 
   const [mode, setMode] = useState<IFormMode>("login");
   const [error, setError] = useState("");
@@ -40,20 +40,27 @@ export function useAuthFormHook() {
     try {
       if (mode === "login") return await login(form.email, form.password);
 
-      if (form.password !== form.confirmedPassword) {
-        setError("As senhas não são iguais");
-        return;
-      }
+      if (form.password !== form.confirmedPassword)
+        return setError("Senha e confirmação de senha devem ser iguais!");
 
-      await createUser({
-        name: form.name,
-        email: form.email,
-        password: form.password,
-      } as any);
+      const data = getUserData();
+      await createUser(data);
+
+      resetForm();
+
+      setMode("login");
     } catch (err: any) {
       console.log(err);
       setError(err?.message || "Erro ao autenticar");
     }
+  }
+
+  function getUserData() {
+    return {
+      name: form.name,
+      email: form.email,
+      password: form.password,
+    };
   }
 
   function resetForm() {
@@ -75,6 +82,7 @@ export function useAuthFormHook() {
       form,
       error,
       mode,
+      loading,
     },
     handlers: {
       handleModeChange,
