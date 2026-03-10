@@ -14,7 +14,6 @@ function App() {
       <ThemeProvider theme={THEME}>
         <GlobalStyle />
         <Routes>
-          {/* rotas públicas */}
           <Route element={<AuthLayout />}>
             {routes
               .filter((route) => !route.requireAuth)
@@ -27,21 +26,18 @@ function App() {
               ))}
           </Route>
 
-          {/* rotas privadas */}
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              authenticated ? <AppLayout /> : <Navigate to="/auth/login" />
+            }
+          >
             {routes
               .filter((route) => route.requireAuth)
               .map((route) => (
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={
-                    authenticated ? (
-                      route.element
-                    ) : (
-                      <Navigate to="/auth/login" />
-                    )
-                  }
+                  element={route.element}
                 />
               ))}
           </Route>

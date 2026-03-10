@@ -1,9 +1,17 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar/Index";
+import { Container, Content } from "./styles";
 
-export default function AppLayout() {
+function AppLayout() {
   return (
-    <div>
-      <Outlet />
-    </div>
+    <Container>
+      <Navbar />
+
+      <Content>
+        <Outlet />
+      </Content>
+    </Container>
   );
 }
+
+export default AppLayout;

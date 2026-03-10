@@ -19,4 +19,14 @@ export const routes: IRoutes[] = [
     element: <Home />,
     requireAuth: true,
   },
+  {
+    path: "/meus-personagens",
+    element: <Home />,
+    requireAuth: true,
+  },
+  {
+    path: "/personagens",
+    element: <Home />,
+    requireAuth: true,
+  },
 ];
