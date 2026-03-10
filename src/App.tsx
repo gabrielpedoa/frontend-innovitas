@@ -1,8 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useVerifyAuth } from "./hooks/useVerifyAuth";
-import Home from "./pages/home/Home";
+import AuthLayout from "./layouts/AuthLayout";
 import { routes } from "./routes";
-import GlobalStyle from "./styles/global";
+import AppLayout from "./layouts/AppLayout";
+import GlobalStyle, { THEME } from "./styles/global";
+import { ThemeProvider } from "@mui/material";
 
 function App() {
   const { authenticated, loading } = useVerifyAuth();
@@ -11,29 +13,44 @@ function App() {
 
   return (
     <>
-      <GlobalStyle />
-      <Routes>
-        <Route
-          path="/"
-          element={authenticated ? <Home /> : <Navigate to="/auth/login" />}
-        />
+      <ThemeProvider theme={THEME}>
+        <GlobalStyle />
+        <Routes>
+          {/* rotas públicas */}
+          <Route element={<AuthLayout />}>
+            {routes
+              .filter((route) => !route.requireAuth)
+              .map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={authenticated ? <Navigate to="/" /> : route.element}
+                />
+              ))}
+          </Route>
 
-        {routes.map((item) => (
-          <Route
-            key={item.path}
-            path={item.path}
-            element={
-              item.requireAuth && !authenticated ? (
-                <Navigate to="/auth/login" />
-              ) : (
-                item.element
-              )
-            }
-          />
-        ))}
+          {/* rotas privadas */}
+          <Route element={<AppLayout />}>
+            {routes
+              .filter((route) => route.requireAuth)
+              .map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={
+                    authenticated ? (
+                      route.element
+                    ) : (
+                      <Navigate to="/auth/login" />
+                    )
+                  }
+                />
+              ))}
+          </Route>
 
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </ThemeProvider>
     </>
   );
 }

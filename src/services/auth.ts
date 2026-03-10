@@ -1,8 +1,13 @@
+import { handleApiError } from "../utils/handleApiError";
 import { Api } from "./api";
 
 export async function loginService(email: string, password: string) {
-  const response = await Api.post("/auth/login", { email, password });
-  return response.data;
+  try {
+    const response = await Api.post("/auth/login", { email, password });
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
 }
 
 export async function logoutService() {

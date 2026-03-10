@@ -12,7 +12,7 @@ export const routes: IRoutes[] = [
   {
     path: "/auth/login",
     element: <Login />,
-    requireAuth: true,
+    requireAuth: false,
   },
   {
     path: "/",
