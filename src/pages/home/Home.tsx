@@ -7,6 +7,7 @@ import {
   CharacterImage,
   CharacterName,
   Container,
+  EmptyMessage,
   FavoritesGrid,
   Section,
   StatsGrid,
@@ -14,7 +15,7 @@ import {
 } from "./styles";
 
 function Home() {
-  const { cards, userFavoriteCharacters } = useHomeHook();
+  const { cards, userFavoriteCharacters, user } = useHomeHook();
 
   return (
     <Container>
@@ -33,7 +34,18 @@ function Home() {
         <Title>Meus Favoritos</Title>
 
         <FavoritesGrid>
-          {userFavoriteCharacters.length === 0 && <p>No favorites yet</p>}
+          {!user && (
+            <EmptyMessage>
+              Faça login ou cadastre-se para salvar seus personagens favoritos
+              ⭐
+            </EmptyMessage>
+          )}
+
+          {userFavoriteCharacters.length === 0 && user && (
+            <EmptyMessage>
+              Você ainda não salvou nenhum personagem 👽
+            </EmptyMessage>
+          )}
 
           {userFavoriteCharacters.map((character) => (
             <CharacterCard key={character.original_character_id}>

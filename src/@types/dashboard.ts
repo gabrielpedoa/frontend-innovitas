@@ -4,6 +4,6 @@ export type IDashboard = {
   totalCharacters: number;
   totalEpisodes: number;
   totalLocations: number;
-  userTotalCharacters: number | undefined;
+  userTotalCharacters: number | null;
   myFavoritesCharacters: ICharacter[] | null;
 };

@@ -6,7 +6,7 @@ import {
   NavContainer,
   NavMenuButton,
   NavMenuItems,
-  NavOverlay
+  NavOverlay,
 } from "./styles";
 
 type IMenu = {
@@ -16,7 +16,7 @@ type IMenu = {
 
 function Navbar() {
   const navigate = useNavigate();
-  const { logout } = useAuthContext();
+  const { user, logout } = useAuthContext();
   const [open, setOpen] = useState(false);
 
   function toggleOpenHamburguerMenu() {
@@ -42,11 +42,23 @@ function Navbar() {
           ))}
         </div>
 
-        <div className="menu-right">
-          <NavMenuButton id="logout" onClick={logout}>
-            Logout
-          </NavMenuButton>
-        </div>
+        {user && (
+          <div className="menu-right">
+            <div>
+              <p id="saudacao">Olá, {user.name}</p>
+              <NavMenuButton id="logout" onClick={logout}>
+                Logout
+              </NavMenuButton>
+            </div>
+          </div>
+        )}
+        {!user && (
+          <div className="menu-right">
+            <NavMenuButton onClick={() => navigate("/auth/login")}>
+              Login | Cadatro
+            </NavMenuButton>
+          </div>
+        )}
       </NavMenuItems>
 
       {open && <NavOverlay onClick={() => setOpen(false)} />}

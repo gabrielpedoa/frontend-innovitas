@@ -38,7 +38,16 @@ export const NavMenuItems = styled.div<{ open: boolean }>`
     white-space: nowrap;
   }
   .menu-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
     margin-left: auto;
+  }
+
+  #saudacao {
+    color: #fff;
+    font-size: 10px;
   }
 
   @media (max-width: 768px) {
@@ -62,7 +71,15 @@ export const NavMenuItems = styled.div<{ open: boolean }>`
     }
 
     .menu-right {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
       width: 100%;
+    }
+
+    #saudacao {
+      color: #fff;
+      font-size: 5px;
     }
   }
 `;

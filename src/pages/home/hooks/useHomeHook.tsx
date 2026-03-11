@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { dashboardService } from "../../../services/dashboard";
-import { useAuthContext } from "../../../hooks/useAuthContext";
 import type { IDashboard } from "../../../@types/dashboard";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import {
+  dashboardAuthService,
+  dashboardNotAuthService,
+} from "../../../services/dashboard";
 
 export default function useHomeHook() {
   const { user } = useAuthContext();
@@ -9,14 +12,21 @@ export default function useHomeHook() {
   const [data, setData] = useState<IDashboard | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      async function loadDashboardWithoutUserId() {
+        const response = await dashboardNotAuthService();
+        setData(response);
+      }
+      loadDashboardWithoutUserId();
+      return;
+    }
 
-    async function loadDashboard() {
-      const response = await dashboardService(user?.id!);
+    async function loadDashboardWithUserId() {
+      const response = await dashboardAuthService(user?.id!);
       setData(response);
     }
 
-    loadDashboard();
+    loadDashboardWithUserId();
   }, [user]);
 
   const userFavoriteCharacters = data?.myFavoritesCharacters ?? [];
@@ -43,5 +53,6 @@ export default function useHomeHook() {
   return {
     cards,
     userFavoriteCharacters,
+    user,
   };
 }

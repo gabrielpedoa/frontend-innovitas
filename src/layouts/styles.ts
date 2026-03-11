@@ -4,7 +4,6 @@ import bg from "../assets/defaultBg.jpg";
 export const AppLayoutContainer = styled.div`
   min-height: 100%;
   width: 100%;
-
   background-image: url(${bg});
   background-size: cover;
   background-position: center;

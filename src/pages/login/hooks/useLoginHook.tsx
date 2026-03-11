@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 type IForm = {
   name: string;
@@ -11,6 +12,7 @@ type IForm = {
 type IFormMode = "login" | "register";
 
 export function useAuthFormHook() {
+  const navigate = useNavigate();
   const { login, createUser, loading } = useAuthContext();
 
   const [mode, setMode] = useState<IFormMode>("login");
@@ -38,7 +40,11 @@ export function useAuthFormHook() {
     setError("");
 
     try {
-      if (mode === "login") return await login(form.email, form.password);
+      if (mode === "login") {
+        await login(form.email, form.password);
+        navigate("/");
+        return;
+      }
 
       if (form.password !== form.confirmedPassword)
         return setError("Senha e confirmação de senha devem ser iguais!");
@@ -49,6 +55,7 @@ export function useAuthFormHook() {
       resetForm();
 
       setMode("login");
+      navigate("/");
     } catch (err: any) {
       console.log(err);
       setError(err?.message || "Erro ao autenticar");

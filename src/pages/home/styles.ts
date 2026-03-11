@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Container = styled.div`
   padding: 40px;
@@ -83,4 +83,30 @@ export const CharacterName = styled.p`
   padding: 12px;
   font-weight: 500;
   text-align: center;
+`;
+
+const pulse = keyframes`
+  0% { opacity: 0.7; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.7; transform: scale(0.98); }
+`;
+
+export const EmptyMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 30px;
+  border-radius: 16px;
+
+  backdrop-filter: blur(10px);
+  background: rgba(20, 20, 20, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  color: white;
+  font-size: 18px;
+  text-align: center;
+
+  animation: ${pulse} 2.5s infinite;
 `;
