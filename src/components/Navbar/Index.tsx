@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import HamburguerComponent from "./components/HamburguerComponent";
 import {
   NavContainer,
-  NavHamburger,
   NavMenuButton,
   NavMenuItems,
-  NavOverlay,
+  NavOverlay
 } from "./styles";
 
 type IMenu = {
@@ -16,7 +16,7 @@ type IMenu = {
 
 function Navbar() {
   const navigate = useNavigate();
-  const { user, logout } = useAuthContext();
+  const { logout } = useAuthContext();
   const [open, setOpen] = useState(false);
 
   function toggleOpenHamburguerMenu() {
@@ -51,22 +51,6 @@ function Navbar() {
 
       {open && <NavOverlay onClick={() => setOpen(false)} />}
     </NavContainer>
-  );
-}
-
-function HamburguerComponent({
-  toggleOpen,
-  open,
-}: {
-  toggleOpen: () => void;
-  open: boolean;
-}) {
-  return (
-    <NavHamburger onClick={toggleOpen} open={open}>
-      <span />
-      <span />
-      <span />
-    </NavHamburger>
   );
 }
 

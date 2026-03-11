@@ -1,34 +1,49 @@
-import { useEffect, useState } from "react";
-import type { IDashboard } from "../../@types/dashboard";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import { dashboardService } from "../../services/dashboard";
+import useHomeHook from "./hooks/useHomeHook";
+import {
+  Card,
+  CardTitle,
+  CardValue,
+  CharacterCard,
+  CharacterImage,
+  CharacterName,
+  Container,
+  FavoritesGrid,
+  Section,
+  StatsGrid,
+  Title,
+} from "./styles";
 
 function Home() {
-  const { user } = useAuthContext();
-  const [data, setData] = useState<IDashboard>();
-
-  useEffect(() => {
-    if (!user) return;
-
-    async function loadDashboard() {
-      const response = await dashboardService(user?.id!);
-      setData(response);
-    }
-
-    loadDashboard();
-  }, [user]);
+  const { cards, userFavoriteCharacters } = useHomeHook();
 
   return (
-    <div>
-      <div>sdadsad</div>
-      <div>sadsad</div>
-      <div>sdadsad</div>
-      <div>sadsad</div>
-      <div>sdadsad</div>
-      <div>sadsad</div>
-      <div>sdadsad</div>
-      <div>sadsad</div>
-    </div>
+    <Container>
+      <Title>Dashboard</Title>
+
+      <StatsGrid>
+        {cards.map((info) => (
+          <Card key={info.title}>
+            <CardTitle>{info.title}</CardTitle>
+            <CardValue>{info.value}</CardValue>
+          </Card>
+        ))}
+      </StatsGrid>
+
+      <Section>
+        <Title>Meus Favoritos</Title>
+
+        <FavoritesGrid>
+          {userFavoriteCharacters.length === 0 && <p>No favorites yet</p>}
+
+          {userFavoriteCharacters.map((character) => (
+            <CharacterCard key={character.original_character_id}>
+              <CharacterImage src={character.image} />
+              <CharacterName>{character.name}</CharacterName>
+            </CharacterCard>
+          ))}
+        </FavoritesGrid>
+      </Section>
+    </Container>
   );
 }
 
