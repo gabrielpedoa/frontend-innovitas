@@ -18,7 +18,18 @@ function Home() {
     loadDashboard();
   }, [user]);
 
-  return <div>Dashboard</div>;
+  return (
+    <div>
+      <div>sdadsad</div>
+      <div>sadsad</div>
+      <div>sdadsad</div>
+      <div>sadsad</div>
+      <div>sdadsad</div>
+      <div>sadsad</div>
+      <div>sdadsad</div>
+      <div>sadsad</div>
+    </div>
+  );
 }
 
 export default Home;

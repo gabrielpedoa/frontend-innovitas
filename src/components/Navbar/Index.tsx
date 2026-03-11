@@ -1,6 +1,13 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { Container, MenuButton } from "./styles";
+import {
+  NavContainer,
+  NavHamburger,
+  NavMenuButton,
+  NavMenuItems,
+  NavOverlay,
+} from "./styles";
 
 type IMenu = {
   onClick: () => void;
@@ -10,26 +17,56 @@ type IMenu = {
 function Navbar() {
   const navigate = useNavigate();
   const { user, logout } = useAuthContext();
+  const [open, setOpen] = useState(false);
+
+  function toggleOpenHamburguerMenu() {
+    setOpen(!open);
+  }
 
   const menu: IMenu[] = [
     { onClick: () => navigate("/"), title: "Home" },
     { onClick: () => navigate("/personagens"), title: "Personagens" },
     { onClick: () => navigate("/meus-personagens"), title: "Meus Personagens" },
-    { onClick: logout, title: "Sair" },
   ];
 
   return (
-    <Container>
-      {menu.map((element) => (
-        <MenuButton onClick={element.onClick}>{element.title}</MenuButton>
-      ))}
+    <NavContainer>
+      <HamburguerComponent toggleOpen={toggleOpenHamburguerMenu} open={open} />
 
-      {!user && (
-        <MenuButton onClick={() => navigate("/auth/login")}>
-          Login / Cadastro
-        </MenuButton>
-      )}
-    </Container>
+      <NavMenuItems open={open}>
+        <div className="menu-left">
+          {menu.map((element) => (
+            <NavMenuButton key={element.title} onClick={element.onClick}>
+              {element.title}
+            </NavMenuButton>
+          ))}
+        </div>
+
+        <div className="menu-right">
+          <NavMenuButton id="logout" onClick={logout}>
+            Logout
+          </NavMenuButton>
+        </div>
+      </NavMenuItems>
+
+      {open && <NavOverlay onClick={() => setOpen(false)} />}
+    </NavContainer>
+  );
+}
+
+function HamburguerComponent({
+  toggleOpen,
+  open,
+}: {
+  toggleOpen: () => void;
+  open: boolean;
+}) {
+  return (
+    <NavHamburger onClick={toggleOpen} open={open}>
+      <span />
+      <span />
+      <span />
+    </NavHamburger>
   );
 }
 
