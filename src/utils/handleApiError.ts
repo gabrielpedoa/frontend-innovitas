@@ -5,7 +5,7 @@ export function handleApiError(error: any): never {
     const message = apiError
       .map((err) => {
         const field = err.path?.join(".") || "campo";
-        return `${field}`;
+        return `${field}: ${err.message}\n`;
       })
       .join("\n");
 
