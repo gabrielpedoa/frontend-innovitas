@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from "react";
 import type {
-    ICharacterApiResponse,
-    IDefaultApiResponse,
+  ICharacterApiResponse,
+  IDefaultApiResponse,
 } from "../../../@types/characters";
 import { useFetching } from "../../../hooks/useFetching";
 
@@ -24,7 +24,7 @@ export default function useCharactersHook() {
 
   function handleSearch() {
     setPage(1);
-    setSearch(name);
+    setSearch(name.trim() || undefined);
   }
 
   function handlePageChange(type: "add" | "remove") {

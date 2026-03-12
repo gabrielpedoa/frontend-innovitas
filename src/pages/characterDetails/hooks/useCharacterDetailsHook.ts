@@ -47,6 +47,20 @@ export default function useCharacterDetailsHook() {
     }
   }, [source, id]);
 
+  const [form, setForm] = useState(character);
+
+  function handleFormChange(field: string, value: string) {
+    setForm((prev: any) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
+
+  useEffect(() => {
+    const characterData = characterApiDetails ?? characterLocalDetails;
+    if (characterData) setForm(characterData);
+  }, [characterApiDetails, characterLocalDetails]);
+
   async function handleSave(
     user: IUser | null,
     character: ICharacterApiResponse,
@@ -60,6 +74,11 @@ export default function useCharacterDetailsHook() {
     try {
       await createCharacterService({
         ...character,
+        origin: { name: character.origin.name, url: character.origin.url },
+        location: {
+          name: character.location.name,
+          url: character.location.url,
+        },
         user_id: user.id!,
       });
 
@@ -134,9 +153,7 @@ export default function useCharacterDetailsHook() {
       ? "Feminino"
       : normalizeValue === "male"
         ? "Masculino"
-        : normalizeValue === "genderless"
-          ? "Sem gênero"
-          : "Desconhecido";
+        : "Sem gênero";
   };
 
   const parseLocation = (value?: string | { name: string }) => {
@@ -157,6 +174,7 @@ export default function useCharacterDetailsHook() {
       isApiCharacter,
       loading,
       error,
+      form,
     },
     character: characterApiDetails ?? characterLocalDetails,
     handlers: {
@@ -164,6 +182,7 @@ export default function useCharacterDetailsHook() {
       handleDelete,
       handleEdit,
       getGender,
+      handleFormChange,
       getOriginName,
       getStatusName,
       parseLocation,

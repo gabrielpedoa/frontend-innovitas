@@ -55,7 +55,6 @@ export function useAuthFormHook() {
       resetForm();
 
       setMode("login");
-      navigate("/");
     } catch (err: any) {
       console.log(err);
       setError(err?.message || "Erro ao autenticar");

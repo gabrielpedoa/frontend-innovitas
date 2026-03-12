@@ -49,13 +49,17 @@ export const CardValue = styled.p`
 
 export const Section = styled.section`
   margin-top: 40px;
+  text-align: center;
 `;
 
-export const FavoritesGrid = styled.div`
+export const FavoritesGrid = styled.div<{ hasFavorite?: boolean }>`
   margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: ${({ hasFavorite }) =>
+    hasFavorite ? "1fr" : "repeat(auto-fit, minmax(220px, 350px))"};
   gap: 20px;
+
+  justify-content: center;
 `;
 
 export const CharacterCard = styled.div`

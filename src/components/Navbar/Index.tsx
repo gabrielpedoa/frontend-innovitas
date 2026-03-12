@@ -26,11 +26,23 @@ function Navbar() {
   function verifyAuthToNavigate() {
     if (!user) return navigate("/auth/login");
     navigate("/meus-personagens");
+    toggleOpenHamburguerMenu();
+  }
+
+  function navigateTo(path: string) {
+    if (path === "home") {
+      navigate("/");
+      toggleOpenHamburguerMenu();
+      return;
+    }
+    navigate("/personagens");
+    toggleOpenHamburguerMenu();
+    return;
   }
 
   const menu: IMenu[] = [
-    { onClick: () => navigate("/"), title: "Home" },
-    { onClick: () => navigate("/personagens"), title: "Personagens" },
+    { onClick: () => navigateTo("home"), title: "Home" },
+    { onClick: () => navigateTo("personagens"), title: "Personagens" },
     { onClick: () => verifyAuthToNavigate(), title: "Meus Personagens" },
   ];
 
@@ -52,7 +64,7 @@ function Navbar() {
             <div>
               <p id="saudacao">Olá, {user.name}</p>
               <NavMenuButton id="logout" onClick={logout}>
-                Logout
+                Sair
               </NavMenuButton>
             </div>
           </div>

@@ -4,6 +4,14 @@ export const FieldContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+ 
+  @media (max-width: 900px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
 `;
 
 export const FieldLabel = styled.span`
@@ -18,6 +26,11 @@ export const FieldInput = styled.input`
   padding: 8px 10px;
   color: white;
   font-size: 14px;
+
+    @media (max-width: 900px) {
+    flex: 1;
+    text-align: center;
+  }
 
   &:read-only {
     border: none;

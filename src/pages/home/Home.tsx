@@ -16,7 +16,7 @@ import {
 
 function Home() {
   const { cards, userFavoriteCharacters, user } = useHomeHook();
-
+  const showMessage = !user || userFavoriteCharacters.length === 0;
   return (
     <Container>
       <Title>Dashboard</Title>
@@ -33,7 +33,7 @@ function Home() {
       <Section>
         <Title>Meus Favoritos</Title>
 
-        <FavoritesGrid>
+        <FavoritesGrid hasFavorite={showMessage}>
           {!user && (
             <EmptyMessage>
               Faça login ou cadastre-se para salvar seus personagens favoritos

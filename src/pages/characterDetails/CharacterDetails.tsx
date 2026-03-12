@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import type {
   ICharacter,
   ICharacterApiResponse,
@@ -21,25 +20,10 @@ export default function CharacterDetails() {
   const { character, handlers, states } = useCharacterDetailsHook();
   const { user } = useAuthContext();
 
-  const apiCharacters = states.isApiCharacter;
-
-  const [form, setForm] = useState(character);
-
-  function handleChange(field: string, value: string) {
-    setForm((prev: any) => ({
-      ...prev,
-      [field]: value,
-    }));
-  }
-
-  console.log(form)
-
-  useEffect(() => {
-    if (character) {
-      setForm(character);
-    }
-  }, [character]);
-
+  console.log({
+    origim: handlers.parseLocation(states.form?.origin),
+    location: handlers.parseLocation(states.form?.location),
+  });
   return (
     <Container>
       <CharacterCard>
@@ -50,39 +34,47 @@ export default function CharacterDetails() {
 
           <CharacterField
             label="Espécie"
-            value={form?.species}
-            editable={!apiCharacters}
-            onChange={(value) => handleChange("species", value)}
+            value={states.form?.species}
+            editable={!states.isApiCharacter}
+            onChange={(value) => handlers.handleFormChange("species", value)}
           />
           <CharacterField
             label="Gênero"
-            value={handlers.getGender(form?.gender)}
-            editable={!apiCharacters}
-            onChange={(value) => handleChange("gender", value)}
+            value={
+              states.isApiCharacter
+                ? handlers.getGender(states.form?.gender)
+                : states.form?.gender
+            }
+            editable={!states.isApiCharacter}
+            onChange={(value) => handlers.handleFormChange("gender", value)}
           />
           <CharacterField
             label="Status"
-            value={handlers.getStatusName(form?.status)}
-            editable={!apiCharacters}
-            onChange={(value) => handleChange("status", value)}
+            value={
+              states.isApiCharacter
+                ? handlers.getStatusName(states.form?.status)
+                : states.form?.status
+            }
+            editable={!states.isApiCharacter}
+            onChange={(value) => handlers.handleFormChange("status", value)}
           />
           <CharacterField
             label="Origem"
-            value={form?.origin as string}
-            editable={!apiCharacters}
-            onChange={(value) => handleChange("origin", value)}
+            value={handlers.parseLocation(states.form?.origin)}
+            editable={!states.isApiCharacter}
+            onChange={(value) => handlers.handleFormChange("origin", value)}
           />
 
           <CharacterField
             label="Localização atual"
-            value={form?.location as string}
-            editable={!apiCharacters}
-            onChange={(value) => handleChange("location", value)}
+            value={handlers.parseLocation(states.form?.location)}
+            editable={!states.isApiCharacter}
+            onChange={(value) => handlers.handleFormChange("location", value)}
           />
 
           {states.error && <ErrorMessage>{states.error}</ErrorMessage>}
           <ButtonGroup>
-            {apiCharacters && (
+            {states.isApiCharacter && (
               <ActionButton
                 disabled={states.loading}
                 onClick={() =>
@@ -93,11 +85,13 @@ export default function CharacterDetails() {
               </ActionButton>
             )}
 
-            {!apiCharacters && (
+            {!states.isApiCharacter && (
               <>
                 <ActionButton
                   disabled={states.loading}
-                  onClick={() => handlers.handleEdit(user, form as ICharacter)}
+                  onClick={() =>
+                    handlers.handleEdit(user, states.form as ICharacter)
+                  }
                 >
                   Editar informações
                 </ActionButton>

@@ -3,6 +3,10 @@ import styled from "styled-components";
 export const Container = styled.div`
   padding: 40px;
   color: white;
+
+  @media (max-width: 900px) {
+    padding: 20px;
+  }
 `;
 
 export const CharacterCard = styled.div`

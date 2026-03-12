@@ -57,7 +57,7 @@ export const NavMenuItems = styled.div<{ open: boolean }>`
     top: 70px;
     left: 0;
     width: 220px;
-    height: 100%;
+    height: calc(100vh - 30px);
     background: rgba(0, 0, 0, 0.95);
     padding: 40px 20px;
     transform: ${({ open }) => (open ? "translateX(0)" : "translateX(-100%)")};

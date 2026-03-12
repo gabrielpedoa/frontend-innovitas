@@ -36,12 +36,7 @@ export default function Characters() {
             }}
           />
 
-          <SearchButton
-            disabled={!states.name.trim()}
-            onClick={handlers.handleSearch}
-          >
-            🔍
-          </SearchButton>
+          <SearchButton onClick={handlers.handleSearch}>🔍</SearchButton>
         </SearchContainer>
       </TopBar>
 

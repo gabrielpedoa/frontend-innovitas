@@ -17,7 +17,7 @@ export const Subtitle = styled.p`
 
 export const CharactersGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
   gap: 24px;
 `;
 

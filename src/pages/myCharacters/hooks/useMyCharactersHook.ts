@@ -25,7 +25,10 @@ export default function useMyCharactersHook() {
     });
   }
 
-  console.log(myCharacters);
+  const characters = myCharacters.sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  );
 
-  return { myCharacters, navigateToCharacterProfile };
+  return { myCharacters: characters, navigateToCharacterProfile };
 }
