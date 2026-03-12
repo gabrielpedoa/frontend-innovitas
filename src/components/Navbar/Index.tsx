@@ -23,10 +23,15 @@ function Navbar() {
     setOpen(!open);
   }
 
+  function verifyAuthToNavigate() {
+    if (!user) return navigate("/auth/login");
+    navigate("/meus-personagens");
+  }
+
   const menu: IMenu[] = [
     { onClick: () => navigate("/"), title: "Home" },
     { onClick: () => navigate("/personagens"), title: "Personagens" },
-    { onClick: () => navigate("/meus-personagens"), title: "Meus Personagens" },
+    { onClick: () => verifyAuthToNavigate(), title: "Meus Personagens" },
   ];
 
   return (

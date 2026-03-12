@@ -13,7 +13,7 @@ export const CharacterCard = styled.div`
   background: #16161a;
   border-radius: 16px;
   padding: 30px;
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
   align-items: center;
 
@@ -38,17 +38,41 @@ export const CharacterName = styled.h1`
   font-size: 32px;
 `;
 
-export const InfoRow = styled.div`
-  font-size: 16px;
-  color: #a1a1aa;
-`;
-
 export const ButtonGroup = styled.div`
   display: flex;
   gap: 12px;
   margin-top: 20px;
   @media (max-width: 900px) {
     justify-content: center;
+  }
+`;
+
+export const ErrorMessage = styled.p`
+  color: #ef4444;
+  margin-top: 10px;
+`;
+
+export const InfoRow = styled.div`
+  font-size: 16px;
+  color: #a1a1aa;
+  display: flex;
+  width: 100%;
+  gap: 2em;
+`;
+
+export const InfoInput = styled.input`
+  width: 50%;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: white;
+  font-size: 14px;
+
+  &:read-only {
+    border: none;
+    background: transparent;
+    padding-left: 0;
   }
 `;
 

@@ -1,8 +1,8 @@
 import type { JSX } from "react";
-import Login from "./pages/login/Login";
-import Home from "./pages/home/Home";
-import Characters from "./pages/characters/Characters";
 import CharacterDetails from "./pages/characterDetails/CharacterDetails";
+import Characters from "./pages/characters/Characters";
+import Home from "./pages/home/Home";
+import MyCharacters from "./pages/myCharacters/MyCharacters";
 
 type IRoutes = {
   path: string;
@@ -18,7 +18,7 @@ export const routes: IRoutes[] = [
   },
   {
     path: "/meus-personagens",
-    element: <Home />,
+    element: <MyCharacters />,
     requireAuth: true,
   },
   {

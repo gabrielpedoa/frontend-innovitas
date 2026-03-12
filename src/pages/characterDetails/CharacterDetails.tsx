@@ -1,4 +1,10 @@
+import { useEffect, useState } from "react";
+import type {
+  ICharacter,
+  ICharacterApiResponse,
+} from "../../@types/characters";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import CharacterField from "./components/CharactersField";
 import useCharacterDetailsHook from "./hooks/useCharacterDetailsHook";
 import {
   ActionButton,
@@ -8,15 +14,32 @@ import {
   CharacterInfo,
   CharacterName,
   Container,
-  InfoRow,
+  ErrorMessage,
 } from "./styles";
 
 export default function CharacterDetails() {
   const { character, handlers, states } = useCharacterDetailsHook();
   const { user } = useAuthContext();
 
-  const apiCharacters = states.source === "api-characters";
-  const favoriteCharacters = states.saved;
+  const apiCharacters = states.isApiCharacter;
+
+  const [form, setForm] = useState(character);
+
+  function handleChange(field: string, value: string) {
+    setForm((prev: any) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }
+
+  console.log(form)
+
+  useEffect(() => {
+    if (character) {
+      setForm(character);
+    }
+  }, [character]);
+
   return (
     <Container>
       <CharacterCard>
@@ -25,33 +48,65 @@ export default function CharacterDetails() {
         <CharacterInfo>
           <CharacterName>{character?.name}</CharacterName>
 
-          <InfoRow>Espécie: {character?.species}</InfoRow>
-          <InfoRow>Gênero: {handlers.getGender(character?.gender)}</InfoRow>
-          <InfoRow>Status: {handlers.getStatusName(character?.status)}</InfoRow>
-          <InfoRow>
-            Origem: {handlers.getOriginName(character?.origin.name)}
-          </InfoRow>
-          <InfoRow>
-            Localização atual: {character?.location?.name ?? "Desconhecida"}
-          </InfoRow>
+          <CharacterField
+            label="Espécie"
+            value={form?.species}
+            editable={!apiCharacters}
+            onChange={(value) => handleChange("species", value)}
+          />
+          <CharacterField
+            label="Gênero"
+            value={handlers.getGender(form?.gender)}
+            editable={!apiCharacters}
+            onChange={(value) => handleChange("gender", value)}
+          />
+          <CharacterField
+            label="Status"
+            value={handlers.getStatusName(form?.status)}
+            editable={!apiCharacters}
+            onChange={(value) => handleChange("status", value)}
+          />
+          <CharacterField
+            label="Origem"
+            value={form?.origin as string}
+            editable={!apiCharacters}
+            onChange={(value) => handleChange("origin", value)}
+          />
 
+          <CharacterField
+            label="Localização atual"
+            value={form?.location as string}
+            editable={!apiCharacters}
+            onChange={(value) => handleChange("location", value)}
+          />
+
+          {states.error && <ErrorMessage>{states.error}</ErrorMessage>}
           <ButtonGroup>
-            {apiCharacters && !favoriteCharacters && (
+            {apiCharacters && (
               <ActionButton
-                disabled={favoriteCharacters}
-                onClick={() => handlers.handleSave(user)}
+                disabled={states.loading}
+                onClick={() =>
+                  handlers.handleSave(user, character as ICharacterApiResponse)
+                }
               >
-                Salvar Personagem
+                {states.loading ? "Salvando..." : "Salvar Personagem"}
               </ActionButton>
             )}
 
-            {states.saved && (
+            {!apiCharacters && (
               <>
-                <ActionButton onClick={handlers.handleEdit}>
-                  Editar
+                <ActionButton
+                  disabled={states.loading}
+                  onClick={() => handlers.handleEdit(user, form as ICharacter)}
+                >
+                  Editar informações
                 </ActionButton>
 
-                <ActionButton danger onClick={handlers.handleDelete}>
+                <ActionButton
+                  danger
+                  disabled={states.loading}
+                  onClick={() => handlers.handleDelete(character?.id)}
+                >
                   Excluir
                 </ActionButton>
               </>
